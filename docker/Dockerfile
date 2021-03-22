@@ -37,6 +37,21 @@ RUN chmod u+x /usr/bin/install.sh && /usr/bin/install.sh
 # Copy the whole application folder into the image
 COPY --chown=$APP_USER:$APP_GROUP . ./
 
+# Precompile assets, production only
+RUN if [ "$RAILS_ENV" == "production"  ]; then rails assets:precompile; fi
+
+# Cleanup
+# Needs priviled user again to remove packages
+USER root
+RUN rm -rf /usr/local/bundle/cache/*.gem && \
+    rm -rf scripts/ && \
+    find /usr/local/bundle/gems/ -name "*.c" -delete && \
+    find /usr/local/bundle/gems/ -name "*.o" -delete && \
+    apk del build_dependencies && \
+    if [ "$RAILS_ENV" == "production"  ]; then rm -rf spec; fi 
+
+USER $APP_USER
+
 # Copy entrypoint into the image and make it executable
 COPY --chown=$APP_USER:$APP_GROUP scripts/entrypoint.sh /usr/bin/
 RUN chmod u+x /usr/bin/entrypoint.sh
