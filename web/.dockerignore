@@ -1,0 +1,13 @@
+*/**/.keep
+log/*
+node_modules/
+tmp/*
+.git
+.github/*
+README.md
+.dockerignore
+.gitattributes
+.gitignore
+.ruby-gemset
+.ruby-version
+.rubocop.yml
