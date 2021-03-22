@@ -12,7 +12,3 @@ fi
 
 cores=`cat /proc/cpuinfo | grep -c "cpu cores"`
 bundle install --retry 3 --jobs $(($cores-1))
-
-if [ "$RAILS_ENV" == "production"  ]; then 
-  rails assets:precompile 
-fi
