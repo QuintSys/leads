@@ -19,7 +19,7 @@
 
   <div class="field">
     <%= form.label :phone %>
-    <%= form.text_field :phone, value: @lead&.formatted_phone, 
+    <%= form.text_field :phone, value: @lead&.formatted_phone(false), 
       placeholder: '2125550000', required: true %>
   </div>
 

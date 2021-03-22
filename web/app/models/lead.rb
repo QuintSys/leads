@@ -13,14 +13,14 @@ class Lead < ApplicationRecord
     parsed_phone
   end
 
-  def formatted_phone
+  def formatted_phone(formatted=true)
     return phone unless parsed_phone.respond_to?(:country_code)
 
     formatted =
       if parsed_phone.country_code == "1"
-        parsed_phone.national
+        parsed_phone.national formatted
       else
-        parsed_phone.full_international
+        parsed_phone.full_international formatted
       end
     formatted.gsub!(";", " x")
     formatted
