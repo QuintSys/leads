@@ -1,0 +1,28 @@
+version: '3'
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.57.0/24
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+  web:
+    build: 
+      context: ./web
+      dockerfile: ../docker/Dockerfile
+      args:
+        RAILS_ENV: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web:/web
+    depends_on:
+      - db
