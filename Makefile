@@ -1,3 +1,6 @@
 .PHONY: build
 build:	
-	docker build -t leads -f ./docker/Dockerfile ./web
+	docker build \
+		--tag leads \
+		--file ./docker/Dockerfile \
+		./web
