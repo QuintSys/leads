@@ -23,16 +23,22 @@ module Web
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
+    config.i18n do |i|
+      default_locale = :en
+      fallbacks = [I18n.default_locale]
+    end
+    config.action_view.raise_on_missing_translations = true
 
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
+    config.generators do |g|
+      g.system_tests = nil
+      g.test_framework = :rspec
+    end
 
-    # Don't generate system test files.
-    config.generators.system_tests = nil
+    config.logger = begin
+                      logger = ActiveSupport::Logger.new(STDOUT).tap do |log|
+                        log.progname = 'Web'
+                      end
+                      ActiveSupport::TaggedLogging.new(logger)
+                    end
   end
 end
